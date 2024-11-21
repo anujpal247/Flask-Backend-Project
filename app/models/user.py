@@ -1,10 +1,18 @@
 
 from ..extensions import db
+from datetime import datetime
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), nullable=False, unique=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-
+    __tablename__ = 'users'
+    
+    user_id = db.Column(db.Integer, primary_key=True)
+    role = db.Column(db.Enum('admin', 'sponsor', 'influencer', name='role_types'), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    # profile_image = db.Column(db.String(255))
+    # created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
     def __repr__(self):
-        return f'<User {self.username}>'
+        return f'<User {self.name}>'
+
