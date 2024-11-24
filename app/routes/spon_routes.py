@@ -12,7 +12,7 @@ def add_detail():
 
   # find sponsor
   spon = Sponsor.query.filter_by(user_id=data["user_id"]).first()
-  if(spon):
+  if(not spon):
     return jsonify({"message": "spon does not exist"}), 400
   
   # update info
@@ -30,7 +30,7 @@ def add_detail():
 def get_spon(user_id):
   # get spon
   spon = Sponsor.query.filter_by(user_id=user_id).first()
-  if(spon):
+  if(not spon):
     return jsonify({"message": "spon does not exist"}), 400
   
   return jsonify({"message": True, "data": spon}), 200
@@ -40,7 +40,7 @@ def get_spon(user_id):
 def delete_spon(user_id):
   user = User.query.filter_by(user_id=user_id).first()
 
-  if(user):
+  if(not user):
     return jsonify({"message": "spon does not exist"}), 404
   
   db.session.delete(user)

@@ -12,7 +12,7 @@ def add_details():
 
   # find infl
   infl = Influencer.query.filter_by(user_id=data["user_id"]).first()
-  if (infl):
+  if (not infl):
     return jsonify({"message": "infl doest not found"}), 404
   
   # update info
@@ -33,7 +33,7 @@ def get_infl(user_id):
   infl = Influencer.query.filter_by(user_id=user_id).first()
 
   # if infl not found
-  if (infl):
+  if (not infl):
     return jsonify({"message": "infl doest not exist"}), 404
   
   # send infl info
@@ -45,7 +45,7 @@ def delelte_infl(user_id):
   user = User.query.filter_by(user_id=user_id)
   
   # if infl not found
-  if (user):
+  if (not user):
     return jsonify({"message": "infl not found"}), 404
   
   # delete it
