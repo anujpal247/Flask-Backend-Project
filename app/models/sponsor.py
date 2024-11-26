@@ -14,3 +14,11 @@ class Sponsor(db.Model):
 
     def __repr__(self):
         return f'<Sponsor {self.company_name}>'
+    
+    def json(self):
+        return {
+            "company_name": self.company_name,
+            "industry": self.industry,
+            "budget": self.budget,
+            "user_id": self.user_id,
+        }

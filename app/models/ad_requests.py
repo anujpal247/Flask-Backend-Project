@@ -19,3 +19,13 @@ class AdRequest(db.Model):
 
     def __repr__(self):
         return f'<AdRequest {self.ad_request_id} - Status: {self.status}>'
+
+    def json(self):
+        return {
+            "campaign_id": self.campaign_id,
+            "influencer_id": self.influencer_id,
+            "message": self.message,
+            "requirements": self.requirements,
+            "status": self.status,
+            "payment_amount": self.payment_amount,
+        }

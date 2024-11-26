@@ -20,3 +20,15 @@ class Campaign(db.Model):
 
     def __repr__(self):
         return f'<Campaign {self.name}>'
+    
+    def json(self):
+        return {
+            "name": self.name,
+            "description": self.description,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+            "budget": self.budget,
+            "visibility": self.visibility,
+            "goals": self.goals,
+            "sponsor_id": self.sponsor_id,
+        }

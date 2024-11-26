@@ -13,7 +13,7 @@ camp_bp = Blueprint('campaigns', __name__, url_prefix='/api/v1/camp')
 def create_camp():
   # get data
   data = request.get_json()
-  print(data)
+
   # validate data
   if(not data["sponsor_id"]):
     return jsonify({"message": "sponsor_id is required!"}), 400
@@ -55,7 +55,7 @@ def get_camp(camp_id):
   if (not camp):
     return jsonify({"message": "campaign does not exist"}), 404
   # send it
-  return jsonify({"message": True, "data": camp}), 200
+  return jsonify({"message": True, "data": camp.json()}), 200
 
 @camp_bp.put('/update/<int:camp_id>')
 def update_camp(camp_id):
@@ -69,40 +69,41 @@ def update_camp(camp_id):
   # get data
   data = request.get_json()
 
-  # validate data (not empty)
-  
+  # update camp info
   if (not data["name"]):
-    return jsonify({"message": "name is required"}), 400
+    camp.name = camp.name
+  else:
+    camp.name = data["name"]
   
   if (not data["budget"]):
-    return jsonify({"message": "budget is required"}), 400
-  
-  if (not data["visibility"]):
-    return jsonify({"message": "visibility is required"}), 400
-  
-  # update camp info
-  camp["name"] = data["name"]
-  camp["budget"] = data["budget"]
-  camp["visibility"] = data["visibility"]
+    camp.budget = camp.budget
+  else:
+    camp.budget = data["budget"]
 
+  if (not data["visibility"]):
+    camp.visibility = camp.visibility
+    return jsonify({"message": "visibility is required"}), 400
+  else:
+    camp.visibility = data["visibility"]
+  
   if(data["description"]):
-    camp["description"] = data["description"]
+    camp.description = data["description"]
 
   if(data["start_date"]):
-    camp["start_date"] = data["start_date"]
+    camp.start_date = data["start_date"]
 
   if(data["end_date"]):
-    camp["end_date"] = data["end_date"]
+    camp.end_date = data["end_date"]
 
   if(data["goals"]):
-    camp["goals"] = data["goals"]
+    camp.goals = data["goals"]
 
   # save changes
   db.session.add(camp)
   db.session.commit()
 
   # send res
-  return jsonify({"message": True, "data": camp}), 200
+  return jsonify({"message": True, "data": camp.json()}), 200
 
 @camp_bp.delete('/del/<int:camp_id>')
 def delete_camp(camp_id):

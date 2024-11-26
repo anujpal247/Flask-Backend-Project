@@ -55,7 +55,7 @@ def get_ad_req(ad_req_id):
   if (not req):
     return jsonify({"status": False, "message": "Ad request not exist"}), 404
   # send res
-  return jsonify({"status": True, "message": "Ad req found", "data": req}), 200
+  return jsonify({"status": True, "message": "Ad req found", "data": req.json()}), 200
 
 @ad_req_bp.put('/update/<int:ad_req_id>')
 def update_ad_req(ad_req_id):
@@ -68,31 +68,29 @@ def update_ad_req(ad_req_id):
   # get data
   data = request.get_json()
 
-  # validate data
-
-  if(not data["payment_amount"]):
-    return jsonify({"message": "payment_amount required", "status": False}), 400
-  
-  if(not data["status"]):
-    return jsonify({"message": "status required", "status": False}), 400
-  
   # update info
+  if(not data["payment_amount"]):
+    req.payment_amount = req.payment_amount
+  else:
+    req.payment_amount = data["payment_amount"]
 
-  req["payment_amount"] = data["payment_amount"]
-  req["status"] = data["status"]
+  if(not data["status"]):
+    req.status = req.status
+  else:
+    req.status = data["status"]
 
   if(data["message"]):
-    req["message"] = data["message"]
+    req.message = data["message"]
 
   if(data["requirements"]):
-    req["requirements"] = data["requirements"]
+    req.requirements = data["requirements"]
     
   # save changes
   db.session.add(req)
   db.session.commit()
   
   # send res
-  return jsonify({"status": True, "message": "Ad req found", "data": req}), 200
+  return jsonify({"status": True, "message": "Ad req found", "data": req.json()}), 200
 
 @ad_req_bp.delete('/del/<int:ad_req_id>')
 def delete_ad_req(ad_req_id):

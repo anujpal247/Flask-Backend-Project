@@ -16,3 +16,6 @@ class Influencer(db.Model):
 
     def __repr__(self):
         return f'<Influencer {self.user_id}>'
+    
+    def json(self):
+        return {"category": self.category, "niche": self.niche, "reach": self.reach, "followers": self.followers, "engagement_rate": self.engagement_rate}
